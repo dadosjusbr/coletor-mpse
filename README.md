@@ -27,7 +27,7 @@ O crawler está estruturado como uma CLI. Você passa dois argumentos (mês e an
 
 ### Executando sem uso do docker:
 
-- Para executar o script é necessário rodar o seguinte comando, a partir do diretório coletor-mpba, adicionando às variáveis seus respectivos valores, a depender da consulta desejada. É válido lembrar que faz-se necessario ter o [Python 3.6.9](https://www.python.org/downloads/) instalado.
+- Para executar o script é necessário rodar o seguinte comando, a partir do diretório coletor-mpse, adicionando às variáveis seus respectivos valores, a depender da consulta desejada. É válido lembrar que faz-se necessario ter o [Python 3.6.9](https://www.python.org/downloads/) instalado.
  
     ```sh
         YEAR=2020 MONTH=01 GIT_COMMIT=$(git rev-list -1 HEAD) python3 src/main.py
