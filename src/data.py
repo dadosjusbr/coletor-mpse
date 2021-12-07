@@ -8,12 +8,25 @@ STATUS_DATA_UNAVAILABLE = 4
 STATUS_INVALID_FILE = 5
 
 
-def _read(file):
-    try:
-        data = pd.read_excel(file, engine="odf").to_numpy()
-    except Exception as excep:
-        print(f"Erro lendo as planilhas: {excep}", file=sys.stderr)
-        sys.exit(STATUS_INVALID_FILE)
+def _read(file, year):
+    if int(year) == 2018:
+        try:
+            data = pd.read_excel(file, engine="odf").to_numpy()
+        except Exception as excep:
+            print(f"Erro lendo as planilhas: {excep}", file=sys.stderr)
+            sys.exit(STATUS_INVALID_FILE)
+    else:
+        try:
+            data = pd.read_excel(file, engine="odf", sheet_name=None, header=None)
+            new_array = []
+    
+            for i, e in data.items():
+                for j in e.to_numpy():
+                    new_array.append(j)
+            return pd.DataFrame(new_array).to_numpy()
+        except Exception as excep:
+            print(f"Erro lendo as planilhas: {excep}", file=sys.stderr)
+            sys.exit(STATUS_INVALID_FILE)
     return data
 
 
@@ -27,12 +40,12 @@ def load(file_names, year, month):
      :return um objeto Data() pronto para operar com os arquivos
     """
 
-    contracheque = _read([c for c in file_names if "contracheque" in c][0])
-    if int(year) == 2018 or (int(year) == 2019 and int(month) < 6):
+    contracheque = _read([c for c in file_names if "contracheque" in c][0], year)
+    if int(year) == 2018 or (int(year) == 2019 and int(month) < 7):
         # Não existe dados exclusivos de verbas indenizatórias nesse período de tempo.
         return Data_2018(contracheque, year, month)
 
-    indenizatorias = _read([i for i in file_names if "indenizatorias" in i][0])
+    indenizatorias = _read([i for i in file_names if "indenizatorias" in i][0], year)
 
     return Data(contracheque, indenizatorias, year, month)
 
@@ -74,7 +87,7 @@ class Data_2018:
     def validate_2018(self, output_path):
         """
          Essa validação só leva em consideração o arquivo Membros Ativos-contracheque,
-         pois até Julho de 2019 o MPBA não disponibiliza o arquivo Verbas Indenizatórias
+         pois até Julho de 2019 o MPSE não disponibiliza o arquivo Verbas Indenizatórias
         """
 
         if not (

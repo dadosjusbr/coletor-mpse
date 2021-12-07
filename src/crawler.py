@@ -178,7 +178,7 @@ def crawl(year, month, output_path):
         download(urls_remuneration[element], file_path)
         files.append(file_path)
 
-    if int(year) == 2018 or (int(year) == 2019 and int(month) < 6):
+    if int(year) == 2018 or (int(year) == 2019 and int(month) < 7):
         # Não existe dados exclusivos de verbas indenizatórias nesse período de tempo.
         pass
     else:
