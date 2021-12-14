@@ -75,7 +75,7 @@ def parse_employees(fn, chave_coleta, ano):
     employees = {}
     counter = 1
     for row in fn:
-        if row[0] == "Mês/Ano de Referencia:" or row[0] == "TotalGeral" or row[0] == "Total Geral" or row[0] == "Data da última atualização:":
+        if row[0] == "Mês/Ano de Referencia:" or row[0] == "Mes/Ano de Referencia:" or row[0] == "TotalGeral" or row[0] == "Total Geral" or row[0] == "Data da última atualização:":
             continue
         if ano == 2018:
             matricula = str(row[1])
