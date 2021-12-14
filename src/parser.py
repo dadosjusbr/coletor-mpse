@@ -75,7 +75,13 @@ def parse_employees(fn, chave_coleta, ano):
     employees = {}
     counter = 1
     for row in fn:
-        if row[0] == "Mês/Ano de Referencia:" or row[0] == "Mes/Ano de Referencia:" or row[0] == "TotalGeral" or row[0] == "Total Geral" or row[0] == "Data da última atualização:":
+        if isinstance(row[0], str) and (
+            "Mês" in row[0]
+            or "Mes" in row[0]
+            or row[0] == "TotalGeral"
+            or row[0] == "Total Geral"
+            or row[0] == "Data da última atualização:"
+        ):
             continue
         if ano == 2018:
             matricula = str(row[1])
@@ -87,7 +93,12 @@ def parse_employees(fn, chave_coleta, ano):
             name = row[1]
             funcao = row[2]
             local_trabalho = row[3]
-        if not is_nan(name) and name != "0" and matricula != "Matrícula" and matricula != "TotalGeral":
+        if (
+            not is_nan(name)
+            and name != "0"
+            and matricula != "Matrícula"
+            and matricula != "TotalGeral"
+        ):
             membro = Coleta.ContraCheque()
             membro.id_contra_cheque = chave_coleta + "/" + str(counter)
             membro.chave_coleta = chave_coleta
@@ -98,9 +109,7 @@ def parse_employees(fn, chave_coleta, ano):
             membro.tipo = Coleta.ContraCheque.Tipo.Value("MEMBRO")
             membro.ativo = True
             if int(ano) == 2018:
-                membro.remuneracoes.CopyFrom(
-                    cria_remuneracao(row, CONTRACHEQUE_2018)
-                )
+                membro.remuneracoes.CopyFrom(cria_remuneracao(row, CONTRACHEQUE_2018))
             else:
                 membro.remuneracoes.CopyFrom(
                     cria_remuneracao(row, CONTRACHEQUE_2019_DEPOIS)
@@ -180,7 +189,9 @@ def parse(data, chave_coleta, mes, ano):
 
         except KeyError as e:
             sys.stderr.write(
-                "Registro inválido ao processar contracheque ou indenizações: {}".format(e)
+                "Registro inválido ao processar contracheque ou indenizações: {}".format(
+                    e
+                )
             )
             os._exit(1)
     for i in employees.values():
