@@ -28,8 +28,6 @@ HEADERS = {
         "Gratificação Natalina": 7,
         "Férias (1/3 constitucional)": 8,
         "Abono de Permanência": 9,
-        "Outras Remunerações Temporárias": 10,
-        "Verbas indenizatórias": 11,
         "Contribuição Previdenciária": 13,
         "Imposto de Renda": 14,
         "Retenção por Teto Constitucional": 15,
@@ -89,7 +87,7 @@ def parse_employees(fn, chave_coleta, ano):
             name = row[1]
             funcao = row[2]
             local_trabalho = row[3]
-        if not isNaN(name) and name != "0" and matricula != "Matrícula" and matricula != "TotalGeral":
+        if not is_nan(name) and name != "0" and matricula != "Matrícula" and matricula != "TotalGeral":
             membro = Coleta.ContraCheque()
             membro.id_contra_cheque = chave_coleta + "/" + str(counter)
             membro.chave_coleta = chave_coleta
@@ -125,17 +123,24 @@ def cria_remuneracao(row, categoria):
             remuneracao.categoria = "contracheque"
         remuneracao.item = key
         remuneracao.valor = format_value(row[value])
-        remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("O")
-        if categoria == CONTRACHEQUE_2018 and value in [5, 6]:
-            remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("B")
-        if categoria == CONTRACHEQUE_2019_DEPOIS and value in [4, 5]:
-            remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("B")
-        if categoria == CONTRACHEQUE_2018 and value in [12, 13, 14]:
-            remuneracao.valor = remuneracao.valor * (-1)
-            remuneracao.natureza = Coleta.Remuneracao.Natureza.Value("D")
-        if categoria == CONTRACHEQUE_2019_DEPOIS and value in [13, 14, 15]:
-            remuneracao.valor = remuneracao.valor * (-1)
-            remuneracao.natureza = Coleta.Remuneracao.Natureza.Value("D")
+        if categoria == CONTRACHEQUE_2018:
+            if value == 5:
+                remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("B")
+            elif value in [12, 13, 14]:
+                remuneracao.valor = remuneracao.valor * (-1)
+                remuneracao.natureza = Coleta.Remuneracao.Natureza.Value("D")
+            elif value in [6, 7, 8, 9, 10, 17, 18]:
+                remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("O")
+        elif categoria == CONTRACHEQUE_2019_DEPOIS:
+            if value == 4:
+                remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("B")
+            elif value in [13, 14, 15]:
+                remuneracao.valor = remuneracao.valor * (-1)
+                remuneracao.natureza = Coleta.Remuneracao.Natureza.Value("D")
+            elif value in [5, 6, 7, 8, 9]:
+                remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("O")
+        else:
+            remuneracao.tipo_receita = Coleta.Remuneracao.TipoReceita.Value("O")
 
         remu_array.remuneracao.append(remuneracao)
     return remu_array
@@ -152,7 +157,7 @@ def update_employees(fn, employees, categoria):
     return employees
 
 
-def isNaN(string):
+def is_nan(string):
     return string != string
 
 
@@ -185,7 +190,7 @@ def parse(data, chave_coleta, mes, ano):
 
 def format_value(element):
     # A value was found with incorrect formatting. (3,045.99 instead of 3045.99)
-    if isNaN(element):
+    if is_nan(element):
         return 0.0
     if type(element) == str:
         if "." in element and "," in element:

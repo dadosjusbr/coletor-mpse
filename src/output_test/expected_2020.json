@@ -16,7 +16,8 @@
                     },
                     {
                         "categoria": "contracheque",
-                        "item": "Outras Verbas Remuneratórias, Legais ou Judiciais"
+                        "item": "Outras Verbas Remuneratórias, Legais ou Judiciais",
+                        "tipoReceita": "O"
                     },
                     {
                         "categoria": "contracheque",
@@ -40,34 +41,20 @@
                         "tipoReceita": "O"
                     },
                     {
-                        "categoria": "contracheque",
-                        "item": "Outras Remunerações Temporárias",
-                        "tipoReceita": "O"
-                    },
-                    {
-                        "categoria": "contracheque",
-                        "item": "Verbas indenizatórias",
-                        "valor": 2270.07,
-                        "tipoReceita": "O"
-                    },
-                    {
                         "natureza": "D",
                         "categoria": "contracheque",
                         "item": "Contribuição Previdenciária",
-                        "valor": -181.97,
-                        "tipoReceita": "O"
+                        "valor": -181.97
                     },
                     {
                         "natureza": "D",
                         "categoria": "contracheque",
-                        "item": "Imposto de Renda",
-                        "tipoReceita": "O"
+                        "item": "Imposto de Renda"
                     },
                     {
                         "natureza": "D",
                         "categoria": "contracheque",
-                        "item": "Retenção por Teto Constitucional",
-                        "tipoReceita": "O"
+                        "item": "Retenção por Teto Constitucional"
                     },
                     {
                         "categoria": "indenizações",
