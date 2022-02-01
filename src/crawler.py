@@ -58,6 +58,8 @@ cod_meses_2021 = {
     "08": "74625",
     "09": "75036",
     "10": "75445",
+    "11": "75950",
+    "12": "76218",
 }
 cod_meses_indenizatorias_2019 = {
     "07": "64806",
@@ -92,6 +94,8 @@ cod_meses_indenizatorias_2021 = {
     "08": "74630",
     "09": "75050",
     "10": "75474",
+    "11": "75957",
+    "12": "76223",
 }
 
 
@@ -173,7 +177,7 @@ def crawl(year, month, output_path):
 
     for element in urls_remuneration:
         pathlib.Path(output_path).mkdir(exist_ok=True)
-        file_name = "membros-ativos-contracheque-" + month + "-" + year + ".ods"
+        file_name = "membros-ativos-contracheque-" + month + "-" + year + ".odt"
         file_path = output_path + "/" + file_name
         download(urls_remuneration[element], file_path)
         files.append(file_path)
