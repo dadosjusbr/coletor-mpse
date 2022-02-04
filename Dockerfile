@@ -13,6 +13,9 @@ COPY requirements.txt .
 # install dependencies
 RUN pip install -r requirements.txt
 
+# install libreoffice
+RUN apt-get install -y libreoffice 
+
 # copy the content of the local src directory to the working directory
 COPY src/ .
 
